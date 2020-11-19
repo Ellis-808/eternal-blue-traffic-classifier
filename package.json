@@ -1,0 +1,31 @@
+{
+  "name": "eternal-blue-traffic-classifier",
+  "version": "1.0.0",
+  "description": "Network traffic classifier to identify malicous traffic",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZachE888/eternal-blue-traffic-classifier.git"
+  },
+  "author": "Zachary Ellis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ZachE888/eternal-blue-traffic-classifier/issues"
+  },
+  "homepage": "https://github.com/ZachE888/eternal-blue-traffic-classifier#readme",
+  "dependencies": {
+    "@tensorflow/tfjs": "^2.7.0",
+    "axios": "^0.21.0",
+    "pandas-js": "^0.2.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "mocha": "^3.2.0"
+  }
+}
