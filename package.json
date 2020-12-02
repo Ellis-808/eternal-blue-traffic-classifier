@@ -22,7 +22,9 @@
   "dependencies": {
     "@tensorflow/tfjs": "^2.7.0",
     "axios": "^0.21.0",
-    "pandas-js": "^0.2.4"
+    "config": "^3.3.3",
+    "pandas-js": "^0.2.4",
+    "pcap-parser": "^0.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
