@@ -22,6 +22,7 @@
   "dependencies": {
     "@tensorflow/tfjs": "^2.7.0",
     "axios": "^0.21.0",
+    "cap": "^0.2.1",
     "config": "^3.3.3",
     "pandas-js": "^0.2.4",
     "pcap-parser": "^0.2.1"
