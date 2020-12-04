@@ -25,7 +25,7 @@ const LINK_TYPE = Object.freeze({
  * @param {Number} offset Byte offset
  */
 function SMB(b, offset) {
-  offset | (offset = 0);  
+  offset || (offset = 0);  
   let orig_offset = offset;
   const header = {
     info: {
@@ -43,10 +43,48 @@ function SMB(b, offset) {
       mid: undefined
     },
     hdrlen: 32, // byte
-    offset: offset + 32
+    offset: offset + 36
   }
 
-  //parse binary buffer
+  // '\xFF' is interpreted as 4 bytes
+  header.info.protocol = b.toString('binary', offset, offset+8).slice(5);
+  offset+=8
+
+  header.info.command = b.readUIntBE(offset, 1);
+  offset+=1;
+
+  header.info.status = b.readUInt32BE(offset, true);
+  offset+=4;
+
+  header.info.flags = b.readUIntBE(offset, 1);
+  offset+=1;
+
+  header.info.flags2 = b.readUIntBE(offset, 2);
+  offset+=2;
+
+  header.info.pidHigh = b.readUInt16BE(offset, true);
+  offset+=2;
+
+  // Bytes get messup up here... wrong data from here on out
+  header.info.securityFeatures = b.readBigUInt64BE(offset, true);
+  offset+=8;
+
+  header.info.reserved = b.readUInt16BE(offset, true);
+  offset+=2;
+
+  header.info.tid = b.readUInt16BE(offset, true);
+  offset+=2;
+
+  header.info.pidLow = b.readUInt16BE(offset, true);
+  offset+=2;
+
+  header.info.uid = b.readUInt16BE(offset, true);
+  offset+=2;
+
+  header.info.mid = b.readUInt16BE(offset, true);
+  offset+=2;
+
+  return header;
 }
 
 /**
@@ -91,11 +129,12 @@ export function preProcessPcap(malewareType) {
             dataLen -= decoded.hdrlen;
             // console.log(decoded);
             const packetInfo = packet.data.toString('binary', decoded.offset, decoded.offset + dataLen);
-            if(packetInfo.toLowerCase().includes("smb") && i <= 20) {
+            if(packetInfo.toLowerCase().includes("smb") && i <= 0) {
               console.log("TCP-Packet:", packetInfo);
               console.log("PACKET", decoded);
+              decoded = SMB(packet.data, decoded.offset);
+              console.log("SMB-Packet:", decoded);
               console.log(packet);
-              // Parse SMB packet out
               i++;
             }
           }
